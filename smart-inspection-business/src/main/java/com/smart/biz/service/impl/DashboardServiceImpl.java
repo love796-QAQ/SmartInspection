@@ -1,6 +1,6 @@
 package com.smart.biz.service.impl;
 
-import com.smart.api.vo.ChartDataVO;
+import com.smart.common.vo.ChartDataVO;
 import com.smart.biz.service.IDashboardService;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.smart.biz.service;
 
-import com.smart.api.vo.ChartDataVO;
+import com.smart.common.vo.ChartDataVO;
 
 public interface IDashboardService {
     /**

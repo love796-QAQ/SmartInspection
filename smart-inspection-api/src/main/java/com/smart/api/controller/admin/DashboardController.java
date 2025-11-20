@@ -1,6 +1,6 @@
 package com.smart.api.controller.admin;
 
-import com.smart.api.vo.ChartDataVO;
+import com.smart.common.vo.ChartDataVO;
 import com.smart.biz.service.IDashboardService;
 import com.smart.common.core.Result;
 import org.springframework.beans.factory.annotation.Autowired;
