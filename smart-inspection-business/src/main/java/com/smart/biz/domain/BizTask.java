@@ -32,7 +32,6 @@ public class BizTask extends BaseEntity {
     private LocalDateTime startTime;
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
 
     @com.baomidou.mybatisplus.annotation.TableField(exist = false)
