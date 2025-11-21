@@ -175,6 +175,7 @@ CREATE TABLE biz_punish_suggestion (
     reason VARCHAR(255),
     status TINYINT DEFAULT 0,
     manager_comment VARCHAR(255),
+    process_instance_id VARCHAR(64),
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
