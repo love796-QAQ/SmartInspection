@@ -40,7 +40,18 @@ public class AuthController {
         Map<String, Object> data = new HashMap<>();
         data.put("token", token);
         data.put("user", user);
+        
+        // Add Data Scope info
+        if (user.getRoleId() != null) {
+            com.smart.system.domain.SysRole role = roleService.getById(user.getRoleId());
+            if (role != null) {
+                data.put("dataScope", role.getDataScope());
+            }
+        }
 
         return Result.success(data);
     }
+
+    @Autowired
+    private com.smart.system.service.ISysRoleService roleService;
 }

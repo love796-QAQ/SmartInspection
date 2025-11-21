@@ -35,10 +35,19 @@ public class TaskController {
     }
     
     @GetMapping("/list")
+    @com.smart.common.annotation.DataScope(deptAlias = "d", userAlias = "u")
     public Result<Page<BizTask>> list(@RequestParam(defaultValue = "1") Integer pageNum,
                                       @RequestParam(defaultValue = "10") Integer pageSize,
                                       BizTask task) {
-        Page<BizTask> page = taskService.page(new Page<>(pageNum, pageSize));
+        com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<BizTask> wrapper = new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>(task);
+        
+        // Handle Data Scope
+        String dataScope = (String) task.getParams().get("dataScope");
+        if (dataScope != null && !dataScope.isEmpty()) {
+            wrapper.apply(dataScope);
+        }
+        
+        Page<BizTask> page = taskService.page(new Page<>(pageNum, pageSize), wrapper);
         page.getRecords().forEach(item -> {
             if (item.getInspectorId() != null) {
                 try {

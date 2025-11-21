@@ -211,7 +211,9 @@ CREATE TABLE biz_performance_result (
 );
 
 -- 4. Initial Data
-INSERT INTO sys_user (username, password, real_name, status) VALUES ('admin', '123456', 'System Admin', 1);
+INSERT INTO sys_role (role_name, role_code, level, data_scope, description) VALUES ('Super Admin', 'admin', 1, '1', 'System Administrator');
+
+INSERT INTO sys_user (username, password, real_name, role_id, status) VALUES ('admin', '123456', 'System Admin', 1, 1);
 
 INSERT INTO base_inspection_category (category_name, sort_order) VALUES 
 ('Personnel', 1), ('Equipment', 2), ('Food', 3), ('Process', 4), ('Hygiene', 5);

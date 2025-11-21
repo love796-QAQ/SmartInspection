@@ -80,6 +80,11 @@ const router = createRouter({
                     component: () => import('../views/workflow/MyTask.vue')
                 },
                 {
+                    path: 'user/profile',
+                    name: 'user-profile',
+                    component: () => import('../views/UserProfile.vue')
+                },
+                {
                     path: 'punish/list',
                     name: 'punish-list',
                     component: () => import('../views/punish/PunishmentList.vue')

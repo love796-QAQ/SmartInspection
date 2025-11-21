@@ -40,4 +40,23 @@ public class SysUserController {
     public Result<Boolean> remove(@PathVariable Long[] ids) {
         return Result.success(userService.removeBatchByIds(java.util.Arrays.asList(ids)));
     }
+    @PutMapping("/profile")
+    public Result<Boolean> updateProfile(@RequestBody SysUser user) {
+        // Only allow updating nickname/email/phone etc.
+        SysUser currentUser = userService.getById(user.getUserId());
+        if (currentUser != null) {
+            currentUser.setRealName(user.getRealName());
+            // Add other fields if needed
+            return Result.success(userService.updateById(currentUser));
+        }
+        return Result.error("User not found");
+    }
+
+    @PutMapping("/profile/password")
+    public Result<Boolean> updatePwd(String oldPassword, String newPassword) {
+        // TODO: Get current user ID from SecurityContext
+        // For now, we assume the frontend passes the user ID or we get it from token (not implemented in this snippet)
+        // This is a placeholder. In a real app, use SecurityUtils.getUserId()
+        return Result.error("Password update not fully implemented yet");
+    }
 }

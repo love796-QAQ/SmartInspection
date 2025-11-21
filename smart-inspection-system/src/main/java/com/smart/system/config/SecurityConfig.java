@@ -15,12 +15,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configure(http))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/admin/**").permitAll() // For development convenience, allow all admin for now. In prod, restrict.
+                //.requestMatchers("/admin/**").permitAll() // Remove this to enforce auth
                 .requestMatchers("/app/**").permitAll()
                 .anyRequest().authenticated()
             );
+        http.addFilterBefore(jwtAuthenticationTokenFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.smart.system.security.filter.JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     }
 }
