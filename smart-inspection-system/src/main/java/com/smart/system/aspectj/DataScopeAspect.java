@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;

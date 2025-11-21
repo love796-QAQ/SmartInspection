@@ -44,4 +44,14 @@ public class JwtUtils {
     public static Long getUserId(String token) {
         return parseToken(token).get("userId", Long.class);
     }
+
+    public static boolean validateToken(String token, com.smart.system.domain.SysUser user) {
+        String username = getUsername(token);
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    }
+
+    private static boolean isTokenExpired(String token) {
+        Date expiration = parseToken(token).getExpiration();
+        return expiration.before(new Date());
+    }
 }
