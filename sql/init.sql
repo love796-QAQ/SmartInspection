@@ -24,9 +24,17 @@ CREATE TABLE sys_role (
     role_name VARCHAR(50) NOT NULL,
     role_code VARCHAR(50) NOT NULL,
     level INT NOT NULL,
+    data_scope CHAR(1) DEFAULT '1' COMMENT '1:All 2:Dept+Sub 3:Dept 4:Self 5:Custom',
     description VARCHAR(200),
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS sys_role_dept;
+CREATE TABLE sys_role_dept (
+    role_id BIGINT NOT NULL,
+    dept_id BIGINT NOT NULL,
+    PRIMARY KEY (role_id, dept_id)
 );
 
 DROP TABLE IF EXISTS sys_dept;

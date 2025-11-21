@@ -18,4 +18,7 @@ public class BaseTemplate extends BaseEntity {
     private String templateName;
     private Long deptId;
     private Integer status;
+
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private java.util.List<Long> itemIds;
 }

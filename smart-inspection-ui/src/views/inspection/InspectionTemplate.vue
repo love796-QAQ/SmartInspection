@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="用户名" prop="username">
+      <el-form-item label="模板名称" prop="templateName">
         <el-input
-          v-model="queryParams.username"
-          placeholder="请输入用户名"
+          v-model="queryParams.templateName"
+          placeholder="请输入模板名称"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -35,18 +35,16 @@
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="templateList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="用户名" align="center" prop="username" />
-      <el-table-column label="真实姓名" align="center" prop="realName" />
+      <el-table-column label="模板ID" align="center" prop="templateId" />
+      <el-table-column label="模板名称" align="center" prop="templateName" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
-            <el-tag v-if="scope.row.status === 1" type="success">正常</el-tag>
-            <el-tag v-else type="danger">停用</el-tag>
+            <el-tag v-if="scope.row.status === 1" type="success">启用</el-tag>
+            <el-tag v-else type="info">停用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
@@ -63,17 +61,25 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="userRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" />
+    <!-- 添加或修改模板对话框 -->
+    <el-dialog :title="title" v-model="open" width="700px" append-to-body>
+      <el-form ref="templateRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="模板名称" prop="templateName">
+          <el-input v-model="form.templateName" placeholder="请输入模板名称" />
         </el-form-item>
-        <el-form-item label="真实姓名" prop="realName">
-          <el-input v-model="form.realName" placeholder="请输入真实姓名" />
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="密码" prop="password" v-if="!form.userId">
-          <el-input v-model="form.password" placeholder="请输入密码" type="password" />
+        <el-form-item label="检查项">
+            <el-transfer
+                v-model="form.itemIds"
+                :data="itemOptions"
+                :titles="['未选项目', '已选项目']"
+                :props="{ key: 'itemId', label: 'itemName' }"
+            />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -88,12 +94,13 @@
 
 <script setup>
 import { ref, reactive, toRefs, getCurrentInstance } from 'vue';
-import { listUser, getUser, delUser, addUser, updateUser } from "@/api/user";
+import { listTemplate, getTemplate, delTemplate, addTemplate, updateTemplate } from "@/api/inspection/template";
+import { listItem } from "@/api/inspection/item";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 const { proxy } = getCurrentInstance();
 
-const userList = ref([]);
+const templateList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -102,31 +109,37 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const itemOptions = ref([]);
 
 const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    username: undefined
+    templateName: undefined
   },
   rules: {
-    username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-    realName: [{ required: true, message: "真实姓名不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
+    templateName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }]
   }
 });
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询用户列表 */
+/** 查询模板列表 */
 function getList() {
   loading.value = true;
-  listUser(queryParams.value).then(response => {
-    userList.value = response.records;
+  listTemplate(queryParams.value).then(response => {
+    templateList.value = response.records;
     total.value = response.total;
     loading.value = false;
   });
+}
+
+/** 查询所有检查项 */
+function getAllItems() {
+    listItem({ pageNum: 1, pageSize: 1000 }).then(response => {
+        itemOptions.value = response.records;
+    });
 }
 
 /** 取消按钮 */
@@ -138,13 +151,12 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    userId: undefined,
-    username: undefined,
-    realName: undefined,
-    password: undefined,
-    status: 1
+    templateId: undefined,
+    templateName: undefined,
+    status: 1,
+    itemIds: []
   };
-  proxy.resetForm("userRef");
+  proxy.resetForm("templateRef");
 }
 
 /** 搜索按钮操作 */
@@ -161,7 +173,7 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.userId);
+  ids.value = selection.map(item => item.templateId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -169,33 +181,35 @@ function handleSelectionChange(selection) {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
+  getAllItems();
   open.value = true;
-  title.value = "添加用户";
+  title.value = "添加模板";
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const userId = row.userId || ids.value;
-  getUser(userId).then(response => {
+  getAllItems();
+  const templateId = row.templateId || ids.value;
+  getTemplate(templateId).then(response => {
     form.value = response;
     open.value = true;
-    title.value = "修改用户";
+    title.value = "修改模板";
   });
 }
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["userRef"].validate(valid => {
+  proxy.$refs["templateRef"].validate(valid => {
     if (valid) {
-      if (form.value.userId != undefined) {
-        updateUser(form.value).then(response => {
+      if (form.value.templateId != undefined) {
+        updateTemplate(form.value).then(response => {
           ElMessage.success("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        addUser(form.value).then(response => {
+        addTemplate(form.value).then(response => {
           ElMessage.success("新增成功");
           open.value = false;
           getList();
@@ -207,9 +221,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const userIds = row.userId || ids.value;
-  ElMessageBox.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function() {
-    return delUser(userIds);
+  const templateIds = row.templateId || ids.value;
+  ElMessageBox.confirm('是否确认删除模板编号为"' + templateIds + '"的数据项？').then(function() {
+    return delTemplate(templateIds);
   }).then(() => {
     getList();
     ElMessage.success("删除成功");

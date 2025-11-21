@@ -26,6 +26,14 @@ public class SysRole extends BaseEntity {
      * 1:Admin...6:AreaHead
      */
     private Integer level;
+
+    /**
+     * 1:All 2:Dept+Sub 3:Dept 4:Self 5:Custom
+     */
+    private String dataScope;
     
     private String description;
+    
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private java.util.List<Long> deptIds;
 }

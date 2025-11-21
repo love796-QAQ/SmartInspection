@@ -15,3 +15,9 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*Mapper.xml
   type-aliases-package: com.smart.system.domain,com.smart.biz.domain
+
+flowable:
+  async-executor-activate: true
+  database-schema-update: true
+  history-level: audit
+  process-definition-location-prefix: classpath*:/processes/

@@ -12,14 +12,41 @@
               <el-icon><icon-menu /></el-icon>
               <span>仪表盘</span>
             </el-menu-item>
-            <el-menu-item index="/config">
-              <el-icon><setting /></el-icon>
-              <span>巡检配置</span>
+            <el-sub-menu index="2">
+              <template #title>
+                <el-icon><setting /></el-icon>
+                <span>巡检配置</span>
+              </template>
+              <el-menu-item index="/inspection/level">等级管理</el-menu-item>
+              <el-menu-item index="/inspection/category">类别管理</el-menu-item>
+              <el-menu-item index="/inspection/item">项目管理</el-menu-item>
+              <el-menu-item index="/inspection/template">模板管理</el-menu-item>
+            </el-sub-menu>
+            <el-menu-item index="/task/list">
+              <el-icon><list /></el-icon>
+              <span>任务管理</span>
             </el-menu-item>
-            <el-menu-item index="/users">
-              <el-icon><user /></el-icon>
-              <span>用户管理</span>
+            <el-sub-menu index="4">
+              <template #title>
+                <el-icon><share /></el-icon>
+                <span>工作流</span>
+              </template>
+              <el-menu-item index="/workflow/design">流程设计</el-menu-item>
+              <el-menu-item index="/workflow/task">我的待办</el-menu-item>
+            </el-sub-menu>
+            <el-menu-item index="/punish/list">
+              <el-icon><warning /></el-icon>
+              <span>处罚管理</span>
             </el-menu-item>
+            <el-sub-menu index="3">
+              <template #title>
+                <el-icon><user /></el-icon>
+                <span>系统管理</span>
+              </template>
+              <el-menu-item index="/users">用户管理</el-menu-item>
+              <el-menu-item index="/roles">角色管理</el-menu-item>
+              <el-menu-item index="/depts">部门管理</el-menu-item>
+            </el-sub-menu>
           </el-menu>
         </el-aside>
         <el-main>

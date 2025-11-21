@@ -25,6 +25,7 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { login } from '@/api/auth'
 
 const router = useRouter()
 const form = reactive({
@@ -33,13 +34,12 @@ const form = reactive({
 })
 
 const onSubmit = () => {
-  // Mock login
-  if (form.username === 'admin') {
+  login(form).then(res => {
     ElMessage.success('登录成功')
+    localStorage.setItem('token', res.token)
+    localStorage.setItem('user', JSON.stringify(res.user))
     router.push('/')
-  } else {
-    ElMessage.error('用户名或密码错误')
-  }
+  })
 }
 </script>
 

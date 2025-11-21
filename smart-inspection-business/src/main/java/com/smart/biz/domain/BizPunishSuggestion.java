@@ -35,4 +35,6 @@ public class BizPunishSuggestion extends BaseEntity {
     private Integer status;
     
     private String managerComment;
+    
+    private String processInstanceId;
 }

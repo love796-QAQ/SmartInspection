@@ -18,8 +18,26 @@ public class SysUserController {
         return Result.success(userService.getById(id));
     }
 
+    @GetMapping("/list")
+    public Result<Object> list(@RequestParam(defaultValue = "1") Integer pageNum,
+                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               SysUser user) {
+        // TODO: Use Page object
+        return Result.success(userService.page(new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum, pageSize)));
+    }
+
     @PostMapping
     public Result<Boolean> add(@RequestBody SysUser user) {
         return Result.success(userService.save(user));
+    }
+
+    @PutMapping
+    public Result<Boolean> edit(@RequestBody SysUser user) {
+        return Result.success(userService.updateById(user));
+    }
+
+    @DeleteMapping("/{ids}")
+    public Result<Boolean> remove(@PathVariable Long[] ids) {
+        return Result.success(userService.removeBatchByIds(java.util.Arrays.asList(ids)));
     }
 }
