@@ -13,7 +13,21 @@ const router = createRouter({
             name: 'dashboard',
             component: () => import('../views/Dashboard.vue'),
             children: [
-                // TODO: Add child routes
+                {
+                    path: '',
+                    name: 'dashboard-home',
+                    component: () => import('../views/DashboardHome.vue')
+                },
+                {
+                    path: 'config',
+                    name: 'inspection-config',
+                    component: () => import('../views/InspectionConfig.vue')
+                },
+                {
+                    path: 'users',
+                    name: 'user-management',
+                    component: () => import('../views/UserManagement.vue')
+                }
             ]
         }
     ]

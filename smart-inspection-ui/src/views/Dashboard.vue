@@ -2,31 +2,28 @@
   <div class="common-layout">
     <el-container>
       <el-header class="header">
-        <div class="logo">Smart Inspection System</div>
-        <div class="user-info">Admin</div>
+        <div class="logo">智慧巡检系统</div>
+        <div class="user-info">管理员</div>
       </el-header>
       <el-container>
         <el-aside width="200px" class="aside">
-          <el-menu default-active="1" class="el-menu-vertical-demo">
-            <el-menu-item index="1">
+          <el-menu default-active="/" class="el-menu-vertical-demo" router>
+            <el-menu-item index="/">
               <el-icon><icon-menu /></el-icon>
-              <span>Dashboard</span>
+              <span>仪表盘</span>
             </el-menu-item>
-            <el-menu-item index="2">
+            <el-menu-item index="/config">
               <el-icon><setting /></el-icon>
-              <span>Inspection Config</span>
+              <span>巡检配置</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="/users">
               <el-icon><user /></el-icon>
-              <span>User Management</span>
+              <span>用户管理</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
-          <el-card>
-            <h2>Welcome to Smart Inspection System</h2>
-            <p>Select a module from the left menu.</p>
-          </el-card>
+          <router-view />
         </el-main>
       </el-container>
     </el-container>

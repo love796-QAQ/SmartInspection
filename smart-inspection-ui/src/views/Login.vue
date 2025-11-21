@@ -3,18 +3,18 @@
     <el-card class="login-card">
       <template #header>
         <div class="card-header">
-          <span>Smart Inspection Login</span>
+          <span>智慧巡检系统登录</span>
         </div>
       </template>
-      <el-form :model="form" label-width="120px">
-        <el-form-item label="Username">
-          <el-input v-model="form.username" />
+      <el-form :model="form" label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="Password">
-          <el-input v-model="form.password" type="password" />
+        <el-form-item label="密码">
+          <el-input v-model="form.password" type="password" placeholder="请输入密码" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Login</el-button>
+          <el-button type="primary" @click="onSubmit" style="width: 100%">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -35,10 +35,10 @@ const form = reactive({
 const onSubmit = () => {
   // Mock login
   if (form.username === 'admin') {
-    ElMessage.success('Login Success')
+    ElMessage.success('登录成功')
     router.push('/')
   } else {
-    ElMessage.error('Invalid credentials')
+    ElMessage.error('用户名或密码错误')
   }
 }
 </script>
