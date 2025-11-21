@@ -24,5 +24,12 @@ public class SysUser extends BaseEntity {
     /**
      * 1:Enable, 0:Disable
      */
+    /**
+     * 1:Enable, 0:Disable
+     */
     private Integer status;
+
+    public boolean isAdmin() {
+        return userId != null && userId == 1L;
+    }
 }

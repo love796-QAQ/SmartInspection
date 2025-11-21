@@ -28,5 +28,4 @@ public class SecurityConfig {
 
     @org.springframework.beans.factory.annotation.Autowired
     private com.smart.system.security.filter.JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    }
 }
