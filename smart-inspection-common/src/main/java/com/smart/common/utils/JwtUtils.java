@@ -45,9 +45,9 @@ public class JwtUtils {
         return parseToken(token).get("userId", Long.class);
     }
 
-    public static boolean validateToken(String token, com.smart.system.domain.SysUser user) {
-        String username = getUsername(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    public static boolean validateToken(String token, String username) {
+        String tokenUsername = getUsername(token);
+        return (tokenUsername.equals(username) && !isTokenExpired(token));
     }
 
     private static boolean isTokenExpired(String token) {
