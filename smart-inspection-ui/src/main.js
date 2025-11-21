@@ -21,4 +21,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 
+app.config.globalProperties.resetForm = function (refName) {
+    if (this.$refs[refName]) {
+        this.$refs[refName].resetFields()
+    }
+}
+
 app.mount('#app')
