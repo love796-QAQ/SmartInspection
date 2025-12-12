@@ -1,16 +1,19 @@
 import { defineStore } from 'pinia'
 
 const useUserStore = defineStore('user', {
-    state: () => ({
-        token: localStorage.getItem('token') || '',
-        name: '',
-        avatar: '',
-        roles: [],
-        permissions: [],
-        dataScope: localStorage.getItem('dataScope') || '',
-        user: JSON.parse(localStorage.getItem('user')) || {},
-        currentDeptId: null // For Dashboard drill-down
-    }),
+    state: () => {
+        const storedUser = JSON.parse(localStorage.getItem('user')) || {}
+        return {
+            token: localStorage.getItem('token') || '',
+            name: storedUser.realName || '',
+            avatar: '',
+            roles: [],
+            permissions: [],
+            dataScope: localStorage.getItem('dataScope') || '',
+            user: storedUser,
+            currentDeptId: null // For Dashboard drill-down
+        }
+    },
     actions: {
         // Login
         login(userInfo) {

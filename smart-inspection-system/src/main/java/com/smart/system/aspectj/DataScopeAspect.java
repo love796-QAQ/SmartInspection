@@ -89,19 +89,28 @@ public class DataScopeAspect {
         }
 
         if (sqlString.length() > 0) {
-            Object params = joinPoint.getArgs()[0];
-            if (params instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) params;
-                baseEntity.getParams().put("dataScope", " AND (" + sqlString.substring(4) + ")");
+            Object[] args = joinPoint.getArgs();
+            if (args != null) {
+                for (Object arg : args) {
+                    if (arg instanceof BaseEntity) {
+                        BaseEntity baseEntity = (BaseEntity) arg;
+                        baseEntity.getParams().put("dataScope", " AND (" + sqlString.substring(4) + ")");
+                        break; // Inject only into the first found BaseEntity
+                    }
+                }
             }
         }
     }
 
     private void clearDataScope(final JoinPoint joinPoint) {
-        Object params = joinPoint.getArgs()[0];
-        if (params != null && params instanceof BaseEntity) {
-            BaseEntity baseEntity = (BaseEntity) params;
-            baseEntity.getParams().put("dataScope", "");
+        Object[] args = joinPoint.getArgs();
+        if (args != null) {
+            for (Object arg : args) {
+                if (arg instanceof BaseEntity) {
+                    BaseEntity baseEntity = (BaseEntity) arg;
+                    baseEntity.getParams().put("dataScope", "");
+                }
+            }
         }
     }
 }
