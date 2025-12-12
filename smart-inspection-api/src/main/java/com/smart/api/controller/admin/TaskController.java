@@ -35,7 +35,7 @@ public class TaskController {
     }
     
     @GetMapping("/list")
-    @com.smart.common.annotation.DataScope(deptAlias = "d", userAlias = "u")
+    @com.smart.common.annotation.DataScope(deptAlias = "biz_task", userAlias = "biz_task")
     public Result<Page<BizTask>> list(@RequestParam(defaultValue = "1") Integer pageNum,
                                       @RequestParam(defaultValue = "10") Integer pageSize,
                                       BizTask task) {

@@ -20,10 +20,20 @@ service.interceptors.request.use(
     }
 )
 
+import router from '@/router'
+
 // Response interceptor
 service.interceptors.response.use(
     response => {
         const res = response.data
+        if (res.code === 401 || res.code === 403) {
+            ElMessage.error('登录已过期，请重新登录')
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            localStorage.removeItem('dataScope')
+            router.push('/login')
+            return Promise.reject(new Error(res.msg || 'Unauthorized'))
+        }
         if (res.code !== 200) {
             ElMessage.error(res.msg || 'Error')
             return Promise.reject(new Error(res.msg || 'Error'))
@@ -32,7 +42,15 @@ service.interceptors.response.use(
         }
     },
     error => {
-        ElMessage.error(error.message)
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            ElMessage.error('未授权或登录已过期，请重新登录')
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            localStorage.removeItem('dataScope')
+            router.push('/login')
+        } else {
+            ElMessage.error(error.message)
+        }
         return Promise.reject(error)
     }
 )
