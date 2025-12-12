@@ -29,6 +29,11 @@ public class InspectionBaseController {
 
     @PostMapping("/level")
     public Result<Boolean> addLevel(@RequestBody BaseInspectionLevel level) {
+        if (level.getLevelCode() == null || level.getLevelCode().isEmpty()) {
+            // Auto-generate code: L + timestamp (last 8 digits to keep it short)
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            level.setLevelCode("L" + timestamp.substring(timestamp.length() - 8));
+        }
         return Result.success(levelService.save(level));
     }
 

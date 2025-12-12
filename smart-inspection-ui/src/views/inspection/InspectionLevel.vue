@@ -88,6 +88,7 @@ function reset() {
   form.value = {
     levelId: undefined,
     levelName: undefined,
+    levelCode: undefined,
     color: '#409EFF',
     scoreWeight: 10
   };

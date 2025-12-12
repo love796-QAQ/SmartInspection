@@ -44,9 +44,9 @@
             {{ getCategoryName(scope.row.categoryId) }}
         </template>
       </el-table-column>
-      <el-table-column label="等级" align="center" prop="levelId">
+      <el-table-column label="默认等级" align="center" prop="defaultLevelId">
         <template #default="scope">
-            {{ getLevelName(scope.row.levelId) }}
+            {{ getLevelName(scope.row.defaultLevelId) }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -81,8 +81,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属等级" prop="levelId">
-          <el-select v-model="form.levelId" placeholder="请选择等级">
+        <el-form-item label="默认等级" prop="defaultLevelId">
+          <el-select v-model="form.defaultLevelId" placeholder="请选择等级">
             <el-option
               v-for="item in levelOptions"
               :key="item.levelId"
@@ -135,7 +135,7 @@ const data = reactive({
   rules: {
     itemName: [{ required: true, message: "项目名称不能为空", trigger: "blur" }],
     categoryId: [{ required: true, message: "类别不能为空", trigger: "change" }],
-    levelId: [{ required: true, message: "等级不能为空", trigger: "change" }]
+    defaultLevelId: [{ required: true, message: "等级不能为空", trigger: "change" }]
   }
 });
 
@@ -183,7 +183,7 @@ function reset() {
     itemId: undefined,
     itemName: undefined,
     categoryId: undefined,
-    levelId: undefined,
+    defaultLevelId: undefined,
     standardDesc: undefined
   };
   proxy.resetForm("itemRef");

@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtils {
-    // Use a secure key for HS256
-    private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // Use a fixed secret key to persist tokens across restarts
+    // "SmartInspectionSecretKeyForJwtTokenGeneration2024" (must be >= 256 bits for HS256)
+    private static final String SECRET = "SmartInspectionSecretKeyForJwtTokenGeneration2024SmartInspectionSecretKeyForJwtTokenGeneration2024";
+    private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
+    
     private static final long EXPIRATION = 86400000L; // 24 hours
 
     public static String createToken(String username, Long userId) {
