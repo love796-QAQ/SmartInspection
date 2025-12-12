@@ -43,7 +43,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 // Log and ignore token errors (invalid signature, expired, etc.)
                 // Request will proceed as anonymous
-                logger.error("Token validation failed: {}", e.getMessage());
+                logger.error("Token validation failed: " + e.getMessage());
             }
         }
         chain.doFilter(request, response);
